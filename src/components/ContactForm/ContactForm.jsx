@@ -20,6 +20,8 @@ export const ContactForm = () => {
     }
 
     dispatch(addContact({ name, phone }));
+
+    e.target.reset();
   };
 
   return (

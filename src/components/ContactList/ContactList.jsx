@@ -14,28 +14,37 @@ export const ContactList = () => {
     dispatch(removeContact(id));
   };
 
+  const getFilteredContacts = () => {
+    if (!filter) {
+      return contacts;
+    }
+
+    const temp = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+    return temp;
+  };
+
+  const filteredContacts = getFilteredContacts();
+
   return (
     <>
-      {filter === '' ? (
-        <ul className={styles.contactsList}>
-          {contacts
-            .filter(contact =>
-              contact.name.toLowerCase().includes(filter.toLowerCase())
-            )
-            .map(contact => (
-              <li key={contact.id} className={styles.element}>
-                {contact.name + ' : ' + contact.phone}
-                <button
-                  onClick={() => handleRemove(contact.id)}
-                  className={styles.button}
-                >
-                  Delete
-                </button>
-              </li>
-            ))}
-        </ul>
+      {filteredContacts.length === 0 ? (
+        <Notification message="No contacts" />
       ) : (
-        <Notification message="No contacts found" />
+        <ul className={styles.contactsList}>
+          {filteredContacts.map(contact => (
+            <li key={contact.id} className={styles.element}>
+              {contact.name + ' : ' + contact.phone}
+              <button
+                onClick={() => handleRemove(contact.id)}
+                className={styles.button}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
       )}
     </>
   );
